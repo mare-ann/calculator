@@ -2,16 +2,17 @@ package com.maryann.calculator.services;
 
 public class CalculationClass {
 
-    public static int calculate (String expression) {
+    public static double calculate (String expression) {
         String res2;
-        if (expression.matches("-?\\d+")){
-            return Integer.parseInt(expression);
+        if (expression.matches("-?\\d+(\\.\\d+)?")){
+            return Double.parseDouble(expression);
         } else if (expression.contains("*") || expression.contains("/")) {
             res2 = calculateExpressionWithoutBrackets(expression, "*", "/");
         } else if (expression.contains("+") || expression.contains("-")) {
             res2 = calculateExpressionWithoutBrackets(expression, "+", "-");
         } else {
-            return Integer.parseInt(expression);
+            double res = Double.parseDouble(expression);
+            return res;
         }
         return calculate(res2);
     }
@@ -38,7 +39,7 @@ public class CalculationClass {
         indB = getEndOfB(expression, firstIndMulOrDiv);
 
         String smallExp = expression.substring(indA, indB + 1);
-        int res = calculateSingleOperation(smallExp);
+        double res = calculateSingleOperation(smallExp);
         String expCutStart = "";
         String expCutEnd = "";
         if (indA != 0 ) {
@@ -55,7 +56,7 @@ public class CalculationClass {
         String a = "";
         for (int i = firstIndMulOrDiv - 1; i >= 0 ; i--) {
             char c = expression.charAt(i);
-            if (c >= '0' && c <= '9') {
+            if ((c >= '0' && c <= '9') || c == '.') {
                 a = c + a;
             } else if(c == '-') {
                 if(i == 0) {
@@ -81,7 +82,7 @@ public class CalculationClass {
 
         for (int i = firstIndMulOrDiv + 1; i < expression.length() ; i++) {
             char c = expression.charAt(i);
-            if (c >= '0' && c <= '9') {
+            if ((c >= '0' && c <= '9') || c == '.') {
                 b = b + c;
             } else {
                 return i - 1;
@@ -90,9 +91,9 @@ public class CalculationClass {
         return firstIndMulOrDiv + b.length();
     }
 
-    private static int calculateSingleOperation (String a, String b, String operation) {
-        int aa = Integer.parseInt(a);
-        int bb = Integer.parseInt(b);
+    private static double calculateSingleOperation (String a, String b, String operation) {
+        double aa = Double.parseDouble(a);
+        double bb = Double.parseDouble(b);
         if (operation.equals("*")) {
             return aa * bb;
         } else if (operation.equals("/")) {
@@ -106,7 +107,7 @@ public class CalculationClass {
         }
     }
 
-    private static int calculateSingleOperation (String expression) {
+    private static double calculateSingleOperation (String expression) {
         if (expression.contains("*")) {
             String a, b, oper;
             oper = "*";

@@ -3,6 +3,9 @@ package com.maryann.calculator.services;
 import com.maryann.calculator.utils.BalanceChecker;
 import com.maryann.calculator.utils.DeleteOfExtraCharacters;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
 public class TranslationClass {
 
     public void translationIntoNumber (String expression) {
@@ -18,17 +21,21 @@ public class TranslationClass {
             return;
         }
 
-        int res = doCalculation(expression);
-        System.out.println("Your result: " + res);
+        double res = doCalculation(expression);
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+        otherSymbols.setDecimalSeparator('.');
+        otherSymbols.setGroupingSeparator(' ');
+        String prityResult = new DecimalFormat("###,###.####", otherSymbols).format(res);
+        System.out.println("Your result: " + prityResult);
     }
 
-    private int doCalculation(String expression) {
+    private double doCalculation(String expression) {
         if (!BalanceChecker.containsBrackets(expression) ) {
-            int calculated = CalculationClass.calculate(expression);
+            double calculated = CalculationClass.calculate(expression);
             return calculated;
         } else { // has brackets
             String expressionInBrackets = BalanceChecker.lastBrackets(expression);
-            int calculated = CalculationClass.calculate(expressionInBrackets);
+            double calculated = CalculationClass.calculate(expressionInBrackets);
 
             int indA = expression.lastIndexOf(expressionInBrackets);
             char bracket = expression.charAt(indA - 1);
