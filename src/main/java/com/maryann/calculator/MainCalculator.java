@@ -13,7 +13,11 @@ public class MainCalculator {
         while (true) {
             Scanner sc = new Scanner(System.in);
             String expression = sc.nextLine();
-            trans.translationIntoNumber(expression);
+            try {
+                trans.translationIntoNumber(expression);
+            } catch (NumberFormatException e) {
+                System.out.println("Failed to process expression, incorrect number format. Try again.");
+            }
         }
     }
 }
