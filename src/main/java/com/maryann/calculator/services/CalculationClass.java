@@ -1,11 +1,15 @@
 package com.maryann.calculator.services;
 
+import com.maryann.calculator.utils.SquareRootAndSquareMultipliersNumbers;
+
 public class CalculationClass {
 
     public static double calculate (String expression) {
         String res2;
         if (expression.matches("-?\\d+(\\.\\d+)?")){
             return Double.parseDouble(expression);
+        } else if (expression.contains("^") || expression.contains("yroot")) {
+            res2 = calculateExpressionWithoutBrackets(expression, "^", "yroot");
         } else if (expression.contains("*") || expression.contains("/")) {
             res2 = calculateExpressionWithoutBrackets(expression, "*", "/");
         } else if (expression.contains("+") || expression.contains("-")) {
@@ -80,6 +84,10 @@ public class CalculationClass {
             firstIndMulOrDiv++;
         }
 
+        if (expression.contains("yroot")) {
+            firstIndMulOrDiv = firstIndMulOrDiv + "yroot".length();
+        }
+
         for (int i = firstIndMulOrDiv + 1; i < expression.length() ; i++) {
             char c = expression.charAt(i);
             if ((c >= '0' && c <= '9') || c == '.') {
@@ -94,7 +102,11 @@ public class CalculationClass {
     private static double calculateSingleOperation (String a, String b, String operation) {
         double aa = Double.parseDouble(a);
         double bb = Double.parseDouble(b);
-        if (operation.equals("*")) {
+        if (operation.equals("^")) {
+            return SquareRootAndSquareMultipliersNumbers.powNumbers(aa, bb);
+        } else if (operation.equals("yroot")) {
+            return SquareRootAndSquareMultipliersNumbers.getRoots(aa, bb);
+        } else if (operation.equals("*")) {
             return aa * bb;
         } else if (operation.equals("/")) {
             return aa / bb;
@@ -108,7 +120,21 @@ public class CalculationClass {
     }
 
     private static double calculateSingleOperation (String expression) {
-        if (expression.contains("*")) {
+        if (expression.contains("^")) {
+            String a, b, oper;
+            oper = "^";
+            int index = expression.indexOf(oper);
+            a = expression.substring(0, index);
+            b = expression.substring(index + 1, expression.length());
+            return calculateSingleOperation(a, b, oper);
+        } else if (expression.contains("yroot")) {
+            String a, b, oper;
+            oper = "yroot";
+            int index = expression.indexOf(oper);
+            a = expression.substring(0, index);
+            b = expression.substring(index + oper.length(), expression.length());
+            return calculateSingleOperation(a, b, oper);
+        } else if (expression.contains("*")) {
             String a, b, oper;
             oper = "*";
             int index = expression.indexOf(oper);

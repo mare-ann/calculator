@@ -2,7 +2,7 @@ package com.maryann.calculator.utils;
 
 import java.util.Stack;
 
-public class BalanceChecker {
+public class BracketsUtils {
 
     public static boolean containsBrackets (String expression) {
         boolean result = true;
