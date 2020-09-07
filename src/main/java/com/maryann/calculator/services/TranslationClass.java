@@ -1,6 +1,6 @@
 package com.maryann.calculator.services;
 
-import com.maryann.calculator.utils.BalanceChecker;
+import com.maryann.calculator.utils.BracketsUtils;
 import com.maryann.calculator.utils.DeleteOfExtraCharacters;
 
 import java.text.DecimalFormat;
@@ -12,7 +12,7 @@ public class TranslationClass {
 
         expression = DeleteOfExtraCharacters.cleanSpaces(expression);
 
-        boolean hasBracket = BalanceChecker.balanceChecker(expression);
+        boolean hasBracket = BracketsUtils.balanceChecker(expression);
 
         if (hasBracket == true) {
             System.out.println("Balance is ok");
@@ -30,11 +30,12 @@ public class TranslationClass {
     }
 
     private double doCalculation(String expression) {
-        if (!BalanceChecker.containsBrackets(expression) ) {
+        if (!BracketsUtils.containsBrackets(expression) ) {
             double calculated = CalculationClass.calculate(expression);
             return calculated;
         } else { // has brackets
-            String expressionInBrackets = BalanceChecker.lastBrackets(expression);
+            String expressionInBrackets = BracketsUtils.lastBrackets(expression);
+
             double calculated = CalculationClass.calculate(expressionInBrackets);
 
             int indA = expression.lastIndexOf(expressionInBrackets);
