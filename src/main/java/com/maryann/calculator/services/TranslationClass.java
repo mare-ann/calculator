@@ -21,6 +21,9 @@ public class TranslationClass {
             return;
         }
 
+        expression = expression.toLowerCase();
+        expression = expression.replace("pi", String.valueOf(Math.PI));
+
         double res = doCalculation(expression);
         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
         otherSymbols.setDecimalSeparator('.');

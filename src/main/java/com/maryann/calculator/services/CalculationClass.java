@@ -1,13 +1,19 @@
 package com.maryann.calculator.services;
 
 import com.maryann.calculator.utils.SquareRootAndSquareMultipliersNumbers;
+import com.maryann.calculator.utils.TrigonometricFunctions;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CalculationClass {
 
     public static double calculate (String expression) {
         String res2;
-        if (expression.matches("-?\\d+(\\.\\d+)?")){
+        if (expression.matches("-?\\d+(\\.\\d+)?")) {
             return Double.parseDouble(expression);
+        } else if (expression.contains("sin") || expression.contains("cos") || expression.contains("tan") || expression.contains("cot")){
+            res2 = replaceTrigonometricFunction(expression);
         } else if (expression.contains("^") || expression.contains("yroot")) {
             res2 = calculateExpressionWithoutBrackets(expression, "^", "yroot");
         } else if (expression.contains("*") || expression.contains("/")) {
@@ -19,6 +25,29 @@ public class CalculationClass {
             return res;
         }
         return calculate(res2);
+    }
+
+    public static String replaceTrigonometricFunction(String expression) {
+        Pattern p = Pattern.compile("(sin|cos|tan|cot)(-?\\d+(\\.\\d+)?)");
+        Matcher m = p.matcher(expression);
+        while (m.find()){
+            String exp = m.group(0);
+            String operation = m.group(1);
+            String value = m.group(2);
+            double res =0;
+            double number = Double.parseDouble(value);
+            if (operation.equals("sin")){
+                 res = TrigonometricFunctions.sineFunction(number);
+            }else if (operation.equals("cos")){
+                 res = TrigonometricFunctions.cosineFunction(number);
+            }else if (operation.equals("tan")){
+                 res = TrigonometricFunctions.tangentFunction(number);
+            }else if (operation.equals("cot")){
+                 res = TrigonometricFunctions.cottangentFunction(number);
+            }
+            expression = expression.replace(exp, String.valueOf(res));
+        }
+        return expression;
     }
 
     private static String calculateExpressionWithoutBrackets(String expression, String operation1, String operation2) {
@@ -78,17 +107,18 @@ public class CalculationClass {
     }
 
     private static int getEndOfB(String expression, int firstIndMulOrDiv) {
+        int operationIndex = firstIndMulOrDiv;
         String b = "";
-        if (expression.charAt(firstIndMulOrDiv + 1) == '-') {
+        if (expression.charAt(operationIndex + 1) == '-') {
             b = "-";
-            firstIndMulOrDiv++;
+            operationIndex++;
         }
 
         if (expression.contains("yroot")) {
-            firstIndMulOrDiv = firstIndMulOrDiv + "yroot".length();
+            operationIndex = operationIndex + "yroot".length();
         }
 
-        for (int i = firstIndMulOrDiv + 1; i < expression.length() ; i++) {
+        for (int i = operationIndex + 1; i < expression.length() ; i++) {
             char c = expression.charAt(i);
             if ((c >= '0' && c <= '9') || c == '.') {
                 b = b + c;
