@@ -1,18 +1,25 @@
 package com.maryann.calculator.utils;
 
 import java.util.Stack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BracketsUtils {
 
+    private static final Logger logger = LoggerFactory.getLogger(BracketsUtils.class);
+
     public static boolean containsBrackets (String expression) {
+        logger.trace("Start function BracketsUtils.containsBrackets()");
         boolean result = true;
         if (!expression.contains("(") && !expression.contains("[") ){
             result = false;
         }
+        logger.trace("End function BracketsUtils.containsBrackets()");
         return result;
     }
 
     public static boolean balanceChecker (String expression) {
+        logger.trace("Start function BracketsUtils.balanceChecker()");
         boolean result = true;
 
         Stack<Character> stack = new Stack<>();
@@ -38,10 +45,12 @@ public class BracketsUtils {
         if (!stack.empty()) {
             return false;
         }
+        logger.trace("End function BracketsUtils.balanceChecker()");
         return result;
     }
 
     public static String lastBrackets (String expression) {
+        logger.trace("Start function BracketsUtils.lastBrackets()");
         String result;
         int lastIndexRoundBracket = expression.lastIndexOf("(");
         int lastIndexSquareBracket = expression.lastIndexOf("[");
@@ -56,7 +65,7 @@ public class BracketsUtils {
         }
 
         result = expression.substring(startFinalIndexBracket + 1, endFinalIndexBracket);
-
+        logger.trace("End function BracketsUtils.lastBrackets()");
         return result;
     }
 
