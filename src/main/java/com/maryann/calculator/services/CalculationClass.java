@@ -1,16 +1,22 @@
 package com.maryann.calculator.services;
-
 import com.maryann.calculator.utils.SquareRootAndSquareMultipliersNumbers;
 import com.maryann.calculator.utils.TrigonometricFunctions;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CalculationClass {
 
+    private static final Logger logger = LoggerFactory.getLogger(CalculationClass.class);
+
     public static double calculate (String expression) {
+        logger.trace("Start function CalculationClass.calculate()");
+        logger.debug("Calculating expression: " + expression);
         String res2;
         if (expression.matches("-?\\d+(\\.\\d+)?")) {
+            logger.debug("Operation not found only number {}", expression);
             return Double.parseDouble(expression);
         } else if (expression.contains("sin") || expression.contains("cos") || expression.contains("tan") || expression.contains("cot")){
             res2 = replaceTrigonometricFunction(expression);
@@ -28,6 +34,7 @@ public class CalculationClass {
     }
 
     public static String replaceTrigonometricFunction(String expression) {
+        logger.trace("Start function CalculationClass.replaceTrigonometricFunction()");
         Pattern p = Pattern.compile("(sin|cos|tan|cot)(-?\\d+(\\.\\d+)?)");
         Matcher m = p.matcher(expression);
         while (m.find()){
@@ -36,6 +43,7 @@ public class CalculationClass {
             String value = m.group(2);
             double res =0;
             double number = Double.parseDouble(value);
+            logger.debug("Found function {}", exp);
             if (operation.equals("sin")){
                  res = TrigonometricFunctions.sineFunction(number);
             }else if (operation.equals("cos")){
@@ -47,10 +55,12 @@ public class CalculationClass {
             }
             expression = expression.replace(exp, String.valueOf(res));
         }
+        logger.trace("End function CalculationClass.replaceTrigonometricFunction()");
         return expression;
     }
 
     private static String calculateExpressionWithoutBrackets(String expression, String operation1, String operation2) {
+        logger.trace("Start function CalculationClass.calculateExpressionWithoutBrackets()");
         expression = expression.replace("--", "+");
         int contMult = expression.indexOf(operation1, 1);
         int contDiv = expression.indexOf(operation2, 1);
@@ -73,6 +83,7 @@ public class CalculationClass {
 
         String smallExp = expression.substring(indA, indB + 1);
         double res = calculateSingleOperation(smallExp);
+        logger.debug("Calculated small expression {} result {} ", smallExp, res);
         String expCutStart = "";
         String expCutEnd = "";
         if (indA != 0 ) {
@@ -81,11 +92,13 @@ public class CalculationClass {
         if (indB != expression.length() - 1) {
             expCutEnd = expression.substring(indB + 1, expression.length());
         }
+        logger.trace("End function CalculationClass.calculateExpressionWithoutBrackets()");
         return expCutStart + res + expCutEnd;
     }
 
 
     private static int getStartOfA(String expression, int firstIndMulOrDiv) {
+        logger.trace("Start function CalculationClass.getStartOfA()");
         String a = "";
         for (int i = firstIndMulOrDiv - 1; i >= 0 ; i--) {
             char c = expression.charAt(i);
@@ -103,10 +116,12 @@ public class CalculationClass {
                 return i + 1;
             }
         }
+        logger.trace("End function CalculationClass.getStartOfA()");
         return firstIndMulOrDiv - a.length();
     }
 
     private static int getEndOfB(String expression, int firstIndMulOrDiv) {
+        logger.trace("Start function CalculationClass.getEndOfB()");
         int operationIndex = firstIndMulOrDiv;
         String b = "";
         if (expression.charAt(operationIndex + 1) == '-') {
@@ -126,10 +141,12 @@ public class CalculationClass {
                 return i - 1;
             }
         }
+        logger.trace("End function CalculationClass.getEndOfB()");
         return firstIndMulOrDiv + b.length();
     }
 
     private static double calculateSingleOperation (String a, String b, String operation) {
+        logger.trace("Start function CalculationClass.calculateSingleOperation(with three value)");
         double aa = Double.parseDouble(a);
         double bb = Double.parseDouble(b);
         if (operation.equals("^")) {
@@ -145,11 +162,14 @@ public class CalculationClass {
         } else if (operation.equals("-")) {
             return aa - bb;
         } else {
+            logger.error("Operation {} have IllegalArgumentException and not recognized!", operation);
             throw new IllegalArgumentException("Operation " + operation + " NOT recognized!");
         }
+
     }
 
     private static double calculateSingleOperation (String expression) {
+        logger.trace("Start function CalculationClass.calculateSingleOperation(with one value)");
         if (expression.contains("^")) {
             String a, b, oper;
             oper = "^";
@@ -193,6 +213,7 @@ public class CalculationClass {
             b = expression.substring(index + 1, expression.length());
             return calculateSingleOperation(a, b, oper);
         } else {
+            logger.error("Expression {} have IllegalArgumentException", expression);
             throw new IllegalArgumentException("Can't calculate expression " + expression);
         }
     }
