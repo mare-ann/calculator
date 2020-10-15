@@ -20,9 +20,10 @@
         </encoder>
     </appender>
 
-    <logger name="deng" level="DEBUG"/>
-    <root level="DEBUG">
+    <logger name="com.maryann.calculator" level="debug"/>
+
+    <root level="error">
         <appender-ref ref="ROLLING" />
-<!--        <appender-ref ref="STDOUT" />-->
+        <appender-ref ref="STDOUT" />
     </root>
 </configuration>

@@ -43,7 +43,7 @@ public class BracketsUtils {
         }
 
         if (!stack.empty()) {
-            return false;
+            result = false;
         }
         logger.trace("End function BracketsUtils.balanceChecker()");
         return result;

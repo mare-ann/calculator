@@ -1,0 +1,131 @@
+body, html {
+  height: 100%;
+}
+
+.line {
+  min-height: 20px;
+  height: 10%;
+  border-style: solid;
+  border-color: #F9E79F;
+  background-color: #F9E79F;
+  opacity: 0.5;
+}
+
+.title {
+    text-align: center;
+    vertical-align: middle;
+    color: #6C3483;
+}
+
+.bg {
+  height: 100%;
+  overflow: auto;
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.inputOutput {
+    border-width: 10px 10px;
+    border-height: 10px 10px;
+    outline-style: auto;
+    outline-color: grey;
+}
+
+.borderOutput {
+    background-color: #FADBD8 ;
+    color: #5B2C6F ;
+    height: 25px;
+    width: 98%;
+    margin-left: 1px;
+    text-align: right;
+    font-size: 20px;
+}
+
+.borderInput {
+    background-color: #FADBD8 ;
+    color: #5B2C6F ;
+    width: 98%;
+    margin-left: 1px;
+    font-size: 20px;
+    text-align: left;
+    height: 25px;
+    height: auto;
+    text-align: right;
+    white-space: nowrap;
+    overflow-y: hidden;
+}
+
+.text1 {
+    text-shadow: 2px 2px gray;
+    color: white;
+
+}
+
+
+
+table {border: none;}
+
+.trigons button {
+    background-color: #3498DB  ; /* Blue */
+}
+
+.numbers button {
+    background-color: #F4D03F ; /* Yellow */
+}
+
+.buttonCalc {
+  border-radius: 12px;
+  border: none;
+  color: white;
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin: 4px 2px;
+  cursor: pointer;
+
+  border-width: 10px 10px;
+  border-height: 10px 10px;
+  outline-style: auto;
+  outline-color: grey;
+}
+
+
+.cal-buttons{
+    display: inline-block;
+}
+
+.floatLeft { width: 50%; float: left; }
+.floatRight {width: 50%; float: right; }
+.container {
+    overflow: hidden;
+}
+
+.wrapper {
+    overflow: hidden;
+    width: fit-content;
+    margin: auto;
+}
+.img-ad {
+    height: 400px;
+}
+
+.shadow {
+    color: white;
+    text-shadow: 1px 1px 2px blue, 0 0 25px blue, 0 0 10px darkblue;
+}
+
+
+.track {
+  white-space: nowrap;
+  will-change: transform;
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-340%); }
+}
