@@ -13,6 +13,34 @@ function clean () {
 }
 
 function append (text) {
+    if(prevKeyCode == 13) {
+        document.getElementById("expression").value = document.getElementById("result").value;
+        document.getElementById("result").value = "";
+    }
     var expression = document.getElementById("expression");
     expression.value += text;
+    prevKeyCode = -1;
+    document.getElementById("expression").focus();
+}
+
+var prevKeyCode;
+
+function enter (event) {
+    if(prevKeyCode == 13) {
+        document.getElementById("expression").value = document.getElementById("result").value;
+        document.getElementById("result").value = "";
+    }
+
+    if (event.keyCode == 13) {
+        event.preventDefault();
+        proceed();
+    }
+    prevKeyCode = event.keyCode;
+}
+
+function enter2 () {
+    proceed();
+    prevKeyCode = 13;
+    document.getElementById("expression").focus();
+
 }
