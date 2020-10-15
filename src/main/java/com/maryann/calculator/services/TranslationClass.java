@@ -15,7 +15,7 @@ public class TranslationClass {
         expression = DeleteOfExtraCharacters.cleanSpaces(expression);
         boolean hasBracket = BracketsUtils.balanceChecker(expression);
 
-        if (hasBracket == true) {
+        if (hasBracket) {
             logger.info("Balance is ok");
         } else {
             logger.warn("Balance is not ok");
@@ -60,7 +60,7 @@ public class TranslationClass {
                 one = expression.substring(0, indA - 1);
             }
             if (indB !=expression.length() - 1) {
-                two = expression.substring(indB + 1, expression.length());
+                two = expression.substring(indB + 1);
             }
             newExpression = one + calculated + two;
             logger.debug("New expression is: {}", newExpression);

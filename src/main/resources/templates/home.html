@@ -1,0 +1,249 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Calculator</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/styles.css">
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+    <script src="js/functions.js"></script>
+</head>
+<body>
+<div class="bg" style='background-image: url("images/background.JPEG");'>
+    <div class="line ">
+        <i>
+            <h1 class="title">
+                <MARQUEE>Hello! Welcome to my calculator! Let's go!</MARQUEE>
+            </h1>
+        </i>
+    </div>
+
+    <div class="wrapper">
+        <label for="expression" class="text1 shadow"><h2 style="margin-block-end: 0px;">Enter your expression:</h2></label>
+        <div class="inputOutput">
+            <textarea rows="2" class="borderInput" type="text" id="expression" name="lname"></textarea>
+        </div>
+        <label for="result" class="text1 shadow"><h2 style="margin-block-end: 0px;">Your result:</h2></label>
+        <div class="inputOutput">
+            <input class="borderOutput" type="text" id="result" readonly name="out">
+        </div>
+
+        <div class="container">
+        <div class="trigons cal-buttons floatLeft">
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <div>
+                            <button onclick="append('sin');" class="buttonCalc">sin</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('cos');" class="buttonCalc">cos</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="clean();" class="buttonCalc">AC</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <button onclick="append('tan');" class="buttonCalc">tan</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('cot');" class="buttonCalc">cot</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('yroot');" class="buttonCalc">yroot</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <button onclick="append('(');" class="buttonCalc">(</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append(')');" class="buttonCalc">)</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('PI');" class="buttonCalc">PI</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <button onclick="append('[');" class="buttonCalc">[</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append(']');" class="buttonCalc">]</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('^');" class="buttonCalc">^</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="numbers cal-buttons floatRight">
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <div>
+                            <button onclick="append('7');" class="buttonCalc">7</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('8');" class="buttonCalc">8</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('9');" class="buttonCalc">9</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('/');" class="buttonCalc">/</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <button onclick="append('4');" class="buttonCalc">4</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('5');" class="buttonCalc">5</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('6');" class="buttonCalc">6</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('*');" class="buttonCalc">*</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <button onclick="append('1');" class="buttonCalc">1</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('2');" class="buttonCalc">2</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('3');" class="buttonCalc">3</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('-');" class="buttonCalc">-</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <button onclick="append('0');" class="buttonCalc">0</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('.');" class="buttonCalc">.</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="proceed();" class="buttonCalc">=</button>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <button onclick="append('+');" class="buttonCalc">+</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+    <div class="line ">
+        <i>
+            <h1 class="title">
+                <MARQUEE>Your ad could be here!</MARQUEE>
+            </h1>
+        </i>
+    </div>
+    <big> <b>
+        <p align="center" color="#F375DA" size="50" class="shadow">
+            Skiing <sup> Boots </sup> Snowboards <sub> Skates </sub> <sup> Everything for downhill skiing </sup>
+            sports<sup> tourism</sup> <sub> and recreation</sub>
+        </p>
+    </b> </big>
+
+    <center>
+        <div class="track">
+            <img class="img-ad" src="https://bikeincity.com.ua/wp-content/uploads/2018/12/bigovi-lyzhi-fischer-bikeincity-100-27.jpg"/>
+            <img class="img-ad" src="https://media.slovoidilo.ua/media/publications/6/53029/53029-1_large.jpg" />
+            <img class="img-ad" src="https://medobaza.ru/wp-content/uploads/2015/12/%D0%92%D1%8B%D0%B1%D0%B8%D1%80%D0%B0%D0%B5%D0%BC-%D0%B1%D0%BE%D1%82%D0%B8%D0%BD%D0%BA%D0%B8-%D0%B4%D0%BB%D1%8F-%D0%B3%D0%BE%D1%80%D0%BD%D1%8B%D1%85-%D0%BB%D1%8B%D0%B6-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D1%8C%D0%BD%D0%BE.jpg"/>
+            <img class="img-ad" src="http://vsitury.com.ua/uploads/179/51644/11044-ital_.jpg" />
+            <img class="img-ad" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Ski_Famille_-_Family_Ski_Holidays.jpg"/>
+            <img class="img-ad" src="http://www.hotel-sk.com.ua/wp-content/uploads/2015/08/equip1111.jpg" />
+            <img class="img-ad" src="https://inlviv.in.ua/wp-content/uploads/2017/12/lyzhi-gory.jpg" />
+            <img class="img-ad" src="https://megaprokat.com.ua/img/snoubordy-i-lyzhy.jpg" />
+            <img class="img-ad" src="https://avatars.mds.yandex.net/get-altay/1426646/2a000001676f1ad3797f7f07560e7a57f7ac/XXL"/>
+        </div>
+    </center>
+    </br>
+
+    <h3>
+        Contact us:
+    </h3>
+    <center>
+        <button>Calling</button>
+        or
+        <button>Get call to you</button>
+    </center>
+    </br>
+    <h3>
+        If You have some questions or propositions
+        <b>
+            <a href="mailto:maria.b.grid@gmail.com?subject = Feedback&body = Message"> Send Feedback </a>
+        </b>
+    </h3>
+    <br>
+</div>
+</body>
+</html>

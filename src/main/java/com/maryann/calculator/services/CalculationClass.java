@@ -44,14 +44,19 @@ public class CalculationClass {
             double res =0;
             double number = Double.parseDouble(value);
             logger.debug("Found function {}", exp);
-            if (operation.equals("sin")){
-                 res = TrigonometricFunctions.sineFunction(number);
-            }else if (operation.equals("cos")){
-                 res = TrigonometricFunctions.cosineFunction(number);
-            }else if (operation.equals("tan")){
-                 res = TrigonometricFunctions.tangentFunction(number);
-            }else if (operation.equals("cot")){
-                 res = TrigonometricFunctions.cottangentFunction(number);
+            switch (operation) {
+                case "sin":
+                    res = TrigonometricFunctions.sineFunction(number);
+                    break;
+                case "cos":
+                    res = TrigonometricFunctions.cosineFunction(number);
+                    break;
+                case "tan":
+                    res = TrigonometricFunctions.tangentFunction(number);
+                    break;
+                case "cot":
+                    res = TrigonometricFunctions.cottangentFunction(number);
+                    break;
             }
             expression = expression.replace(exp, String.valueOf(res));
         }
@@ -65,17 +70,13 @@ public class CalculationClass {
         int contMult = expression.indexOf(operation1, 1);
         int contDiv = expression.indexOf(operation2, 1);
 
-        int firstIndMulOrDiv = 0;
-        if(contMult == -1) { // ÌÂÏ‡∫ +
+        int firstIndMulOrDiv;
+        if(contMult == -1) { // –Ω–µ–º–∞—î +
             firstIndMulOrDiv = contDiv;
-        } else if (contDiv == -1) { //ÌÂÏ‡∫ -
+        } else if (contDiv == -1) { //–Ω–µ–º–∞—î -
             firstIndMulOrDiv = contMult;
-        } else { // ∫ ≥ "+" ≥ "-"
-            if(contDiv < contMult) {
-                firstIndMulOrDiv = contDiv;
-            } else {
-                firstIndMulOrDiv = contMult;
-            }
+        } else { // —î —ñ "+" —ñ "-"
+            firstIndMulOrDiv = Math.min(contDiv, contMult);
         }
         int indA, indB;
         indA = getStartOfA(expression, firstIndMulOrDiv);
@@ -90,7 +91,7 @@ public class CalculationClass {
             expCutStart = expression.substring(0, indA);
         }
         if (indB != expression.length() - 1) {
-            expCutEnd = expression.substring(indB + 1, expression.length());
+            expCutEnd = expression.substring(indB + 1);
         }
         logger.trace("End function CalculationClass.calculateExpressionWithoutBrackets()");
         return expCutStart + res + expCutEnd;
@@ -99,16 +100,16 @@ public class CalculationClass {
 
     private static int getStartOfA(String expression, int firstIndMulOrDiv) {
         logger.trace("Start function CalculationClass.getStartOfA()");
-        String a = "";
+        StringBuilder a = new StringBuilder();
         for (int i = firstIndMulOrDiv - 1; i >= 0 ; i--) {
             char c = expression.charAt(i);
             if ((c >= '0' && c <= '9') || c == '.') {
-                a = c + a;
+                a.insert(0, c);
             } else if(c == '-') {
                 if(i == 0) {
-                    a = c + a;
+                    a.insert(0, c);
                 } else if (expression.charAt(i - 1) == '+' || expression.charAt(i - 1) == '-') {
-                    a = c + a;
+                    a.insert(0, c);
                 } else {
                     return i + 1;
                 }
@@ -142,28 +143,29 @@ public class CalculationClass {
             }
         }
         logger.trace("End function CalculationClass.getEndOfB()");
-        return firstIndMulOrDiv + b.length();
+        return operationIndex + b.length();
     }
 
     private static double calculateSingleOperation (String a, String b, String operation) {
         logger.trace("Start function CalculationClass.calculateSingleOperation(with three value)");
         double aa = Double.parseDouble(a);
         double bb = Double.parseDouble(b);
-        if (operation.equals("^")) {
-            return SquareRootAndSquareMultipliersNumbers.powNumbers(aa, bb);
-        } else if (operation.equals("yroot")) {
-            return SquareRootAndSquareMultipliersNumbers.getRoots(aa, bb);
-        } else if (operation.equals("*")) {
-            return aa * bb;
-        } else if (operation.equals("/")) {
-            return aa / bb;
-        } else if (operation.equals("+")) {
-            return aa + bb;
-        } else if (operation.equals("-")) {
-            return aa - bb;
-        } else {
-            logger.error("Operation {} have IllegalArgumentException and not recognized!", operation);
-            throw new IllegalArgumentException("Operation " + operation + " NOT recognized!");
+        switch (operation) {
+            case "^":
+                return SquareRootAndSquareMultipliersNumbers.powNumbers(aa, bb);
+            case "yroot":
+                return SquareRootAndSquareMultipliersNumbers.getRoots(aa, bb);
+            case "*":
+                return aa * bb;
+            case "/":
+                return aa / bb;
+            case "+":
+                return aa + bb;
+            case "-":
+                return aa - bb;
+            default:
+                logger.error("Operation {} have IllegalArgumentException and not recognized!", operation);
+                throw new IllegalArgumentException("Operation " + operation + " NOT recognized!");
         }
 
     }
@@ -175,42 +177,42 @@ public class CalculationClass {
             oper = "^";
             int index = expression.indexOf(oper);
             a = expression.substring(0, index);
-            b = expression.substring(index + 1, expression.length());
+            b = expression.substring(index + 1);
             return calculateSingleOperation(a, b, oper);
         } else if (expression.contains("yroot")) {
             String a, b, oper;
             oper = "yroot";
             int index = expression.indexOf(oper);
             a = expression.substring(0, index);
-            b = expression.substring(index + oper.length(), expression.length());
+            b = expression.substring(index + oper.length());
             return calculateSingleOperation(a, b, oper);
         } else if (expression.contains("*")) {
             String a, b, oper;
             oper = "*";
             int index = expression.indexOf(oper);
             a = expression.substring(0, index);
-            b = expression.substring(index + 1, expression.length());
+            b = expression.substring(index + 1);
             return calculateSingleOperation(a, b, oper);
         } else if (expression.contains("/")) {
             String a, b, oper;
             oper = "/";
             int index = expression.indexOf(oper);
             a = expression.substring(0, index);
-            b = expression.substring(index + 1, expression.length());
+            b = expression.substring(index + 1);
             return calculateSingleOperation(a, b, oper);
         } else if (expression.contains("+")) {
             String a, b, oper;
             oper = "+";
             int index = expression.indexOf(oper);
             a = expression.substring(0, index);
-            b = expression.substring(index + 1, expression.length());
+            b = expression.substring(index + 1);
             return calculateSingleOperation(a, b, oper);
         } else if (expression.contains("-")) {
             String a, b, oper;
             oper = "-";
             int index = expression.lastIndexOf(oper);
             a = expression.substring(0, index);
-            b = expression.substring(index + 1, expression.length());
+            b = expression.substring(index + 1);
             return calculateSingleOperation(a, b, oper);
         } else {
             logger.error("Expression {} have IllegalArgumentException", expression);
