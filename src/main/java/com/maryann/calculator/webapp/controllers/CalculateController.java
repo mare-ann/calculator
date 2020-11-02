@@ -1,13 +1,9 @@
 package com.maryann.calculator.webapp.controllers;
 
-import com.maryann.calculator.MainCalculator;
-import com.maryann.calculator.services.TranslationClass;
+import com.maryann.calculator.services.ExpressionTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -25,8 +21,8 @@ public class CalculateController {
             return "";
         } else {
             try {
-                TranslationClass trans = new TranslationClass();
-                double res = trans.translationIntoNumber(q);
+                ExpressionTransformer trans = new ExpressionTransformer();
+                double res = trans.transformIntoNumber(q);
                 DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
                 otherSymbols.setDecimalSeparator('.');
                 otherSymbols.setGroupingSeparator(' ');

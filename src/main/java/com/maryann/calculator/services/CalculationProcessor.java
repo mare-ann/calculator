@@ -7,12 +7,12 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CalculationClass {
+public class CalculationProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(CalculationClass.class);
+    private static final Logger logger = LoggerFactory.getLogger(CalculationProcessor.class);
 
     public static double calculate (String expression) {
-        logger.trace("Start function CalculationClass.calculate()");
+        logger.trace("Start function CalculationProcessor.calculate()");
         logger.debug("Calculating expression: " + expression);
         String res2;
         if (expression.matches("-?\\d+(\\.\\d+)?")) {
@@ -34,7 +34,7 @@ public class CalculationClass {
     }
 
     public static String replaceTrigonometricFunction(String expression) {
-        logger.trace("Start function CalculationClass.replaceTrigonometricFunction()");
+        logger.trace("Start function CalculationProcessor.replaceTrigonometricFunction()");
         Pattern p = Pattern.compile("(sin|cos|tan|cot)(-?\\d+(\\.\\d+)?)");
         Matcher m = p.matcher(expression);
         while (m.find()){
@@ -60,12 +60,12 @@ public class CalculationClass {
             }
             expression = expression.replace(exp, String.valueOf(res));
         }
-        logger.trace("End function CalculationClass.replaceTrigonometricFunction()");
+        logger.trace("End function CalculationProcessor.replaceTrigonometricFunction()");
         return expression;
     }
 
     private static String calculateExpressionWithoutBrackets(String expression, String operation1, String operation2) {
-        logger.trace("Start function CalculationClass.calculateExpressionWithoutBrackets()");
+        logger.trace("Start function CalculationProcessor.calculateExpressionWithoutBrackets()");
         expression = expression.replace("--", "+");
         int contMult = expression.indexOf(operation1, 1);
         int contDiv = expression.indexOf(operation2, 1);
@@ -93,13 +93,13 @@ public class CalculationClass {
         if (indB != expression.length() - 1) {
             expCutEnd = expression.substring(indB + 1);
         }
-        logger.trace("End function CalculationClass.calculateExpressionWithoutBrackets()");
+        logger.trace("End function CalculationProcessor.calculateExpressionWithoutBrackets()");
         return expCutStart + res + expCutEnd;
     }
 
 
     private static int getStartOfA(String expression, int firstIndMulOrDiv) {
-        logger.trace("Start function CalculationClass.getStartOfA()");
+        logger.trace("Start function CalculationProcessor.getStartOfA()");
         StringBuilder a = new StringBuilder();
         for (int i = firstIndMulOrDiv - 1; i >= 0 ; i--) {
             char c = expression.charAt(i);
@@ -117,12 +117,12 @@ public class CalculationClass {
                 return i + 1;
             }
         }
-        logger.trace("End function CalculationClass.getStartOfA()");
+        logger.trace("End function CalculationProcessor.getStartOfA()");
         return firstIndMulOrDiv - a.length();
     }
 
     private static int getEndOfB(String expression, int firstIndMulOrDiv) {
-        logger.trace("Start function CalculationClass.getEndOfB()");
+        logger.trace("Start function CalculationProcessor.getEndOfB()");
         int operationIndex = firstIndMulOrDiv;
         String b = "";
         if (expression.charAt(operationIndex + 1) == '-') {
@@ -142,12 +142,12 @@ public class CalculationClass {
                 return i - 1;
             }
         }
-        logger.trace("End function CalculationClass.getEndOfB()");
+        logger.trace("End function CalculationProcessor.getEndOfB()");
         return operationIndex + b.length();
     }
 
     private static double calculateSingleOperation (String a, String b, String operation) {
-        logger.trace("Start function CalculationClass.calculateSingleOperation(with three value)");
+        logger.trace("Start function CalculationProcessor.calculateSingleOperation(with three value)");
         double aa = Double.parseDouble(a);
         double bb = Double.parseDouble(b);
         switch (operation) {
@@ -171,7 +171,7 @@ public class CalculationClass {
     }
 
     private static double calculateSingleOperation (String expression) {
-        logger.trace("Start function CalculationClass.calculateSingleOperation(with one value)");
+        logger.trace("Start function CalculationProcessor.calculateSingleOperation(with one value)");
         if (expression.contains("^")) {
             String a, b, oper;
             oper = "^";

@@ -10,11 +10,16 @@ function proceed () {
 
 function clean () {
    document.getElementById("expression").value ="";
+    document.getElementById("result").value = "";
 }
 
 function append (text) {
     if(prevKeyCode == 13) {
-        document.getElementById("expression").value = document.getElementById("result").value;
+        if (document.getElementById("result").value.startsWith("Error")) {
+            document.getElementById("expression").value = "";
+        } else {
+            document.getElementById("expression").value = document.getElementById("result").value;
+        }
         document.getElementById("result").value = "";
     }
     var expression = document.getElementById("expression");
