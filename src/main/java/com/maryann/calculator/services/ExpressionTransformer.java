@@ -6,12 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class TranslationClass {
+public class ExpressionTransformer {
 
-    private static final Logger logger = LoggerFactory.getLogger(TranslationClass.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExpressionTransformer.class);
 
-    public double translationIntoNumber (String expression) {
-        logger.trace("Start function TranslationClass.translationIntoNumber()");
+    public double transformIntoNumber(String expression) {
+        logger.trace("Start function ExpressionTransformer.transformIntoNumber()");
         expression = DeleteOfExtraCharacters.cleanSpaces(expression);
         boolean hasBracket = BracketsUtils.balanceChecker(expression);
 
@@ -27,22 +27,22 @@ public class TranslationClass {
         logger.info("Expression after cleaning: " + expression);
         double res = doCalculation(expression);
         logger.info("Expression calculated successfully");
-        logger.trace("End function TranslationClass.translationIntoNumber()");
+        logger.trace("End function ExpressionTransformer.transformIntoNumber()");
         return res;
     }
 
     private double doCalculation(String expression) {
-        logger.trace("Start function TranslationClass.doCalculation()");
+        logger.trace("Start function ExpressionTransformer.doCalculation()");
         logger.debug("Calculating expression: " + expression);
         if (!BracketsUtils.containsBrackets(expression) ) {
-            double calculated = CalculationClass.calculate(expression);
+            double calculated = CalculationProcessor.calculate(expression);
             logger.debug("Returned result for expression {} = {}", expression, calculated);
-            logger.trace("End function TranslationClass.doCalculation()");
+            logger.trace("End function ExpressionTransformer.doCalculation()");
             return calculated;
         } else { // has brackets
             String expressionInBrackets = BracketsUtils.lastBrackets(expression);
             logger.debug("Extracted {} from {}", expressionInBrackets, expression);
-            double calculated = CalculationClass.calculate(expressionInBrackets);
+            double calculated = CalculationProcessor.calculate(expressionInBrackets);
             logger.debug("Res for {} is {}", expressionInBrackets,calculated);
             int indA = expression.lastIndexOf(expressionInBrackets);
             char bracket = expression.charAt(indA - 1);

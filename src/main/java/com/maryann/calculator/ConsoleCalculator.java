@@ -2,32 +2,32 @@ package com.maryann.calculator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.maryann.calculator.services.TranslationClass;
+import com.maryann.calculator.services.ExpressionTransformer;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Scanner;
 
-public class MainCalculator {
+public class ConsoleCalculator {
 
-    private static final Logger logger = LoggerFactory.getLogger(MainCalculator.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConsoleCalculator.class);
 
 
     public static void main(String[] args) {
-        logger.trace("start function MainCalculator.main()");
+        logger.trace("Start function MainCalculator.main()");
         logger.info("Starting the program");
 
-        logger.debug("requesting to the user to enter data");
+        logger.debug("Requesting to the user to enter data");
         System.out.println("Enter your expression: ");
-        TranslationClass trans = new TranslationClass();
+        ExpressionTransformer trans = new ExpressionTransformer();
 
         while (true) {
             logger.debug("Reading information from user with scanner ");
             Scanner sc = new Scanner(System.in);
             String expression = sc.nextLine();
-            logger.info("user entered: \n" + expression);
+            logger.info("User entered: \n" + expression);
             try {
-                double res = trans.translationIntoNumber(expression);
+                double res = trans.transformIntoNumber(expression);
                 DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
                 otherSymbols.setDecimalSeparator('.');
                 otherSymbols.setGroupingSeparator(' ');
