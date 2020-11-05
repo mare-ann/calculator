@@ -29,7 +29,12 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile('org.mockito:mockito-junit-jupiter:2.23.0')
     testCompile 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
-   
+
+    // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-alpha-3'
+
+
+
 }
 
 test {
