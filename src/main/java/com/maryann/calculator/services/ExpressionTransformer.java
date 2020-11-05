@@ -4,8 +4,9 @@ import com.maryann.calculator.utils.BracketsUtils;
 import com.maryann.calculator.utils.DeleteOfExtraCharacters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class ExpressionTransformer {
 
     private static final Logger logger = LoggerFactory.getLogger(ExpressionTransformer.class);
