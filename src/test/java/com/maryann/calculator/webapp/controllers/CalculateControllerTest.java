@@ -1,5 +1,6 @@
 package com.maryann.calculator.webapp.controllers;
 
+import com.maryann.calculator.db.jdbc.DBLogsUtils;
 import com.maryann.calculator.services.ExpressionTransformer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,11 +26,14 @@ public class CalculateControllerTest {
 
     @MockBean
     private ExpressionTransformer trans;
+    @MockBean
+    private DBLogsUtils dbLogsUtils;
 
     @Test
     public void controllerTest() throws Exception {
         String input = "27yroot3";
         Mockito.when(trans.transformIntoNumber(input)).thenReturn(3.0);
+        Mockito.doNothing().when(dbLogsUtils).saveExpression(eq(input), eq("3"), anyLong());
 
         MockHttpServletResponse responce = mockMvc.perform(get("/calculate")
                 .param("q", input))
