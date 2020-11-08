@@ -1,0 +1,1 @@
+INSERT INTO `calculator`.`logs` (`expression`, `result`, `calculation_time`) VALUES ('init log for test', '0', '100');
