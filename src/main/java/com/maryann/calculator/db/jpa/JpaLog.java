@@ -1,12 +1,29 @@
-package com.maryann.calculator.db.jdbc;
+package com.maryann.calculator.db.jpa;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-//class to present one row from logs table
-public class Log {
+
+@Entity
+@Table(name = "logs")
+public class JpaLog {
+
+    @Id
+    @Column(name = "id")
     private Integer id ;
+
+    @Column(name = "expression")
     private String expression;
+
+    @Column(name = "result")
     private  String result;
+
+    @Column(name = "calculation_time")
     private Integer calculationTime;
+
+    @Column(name = "created_at")
     private Date createdAt;
 
     public Integer getId() {
