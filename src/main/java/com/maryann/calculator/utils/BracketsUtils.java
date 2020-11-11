@@ -4,6 +4,14 @@ import java.util.Stack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class work with brackets
+ * Can check balance or if brackets exists
+ * @author Maria Gridneva
+ * @version 1.0
+ * @since 1.0
+ */
+
 public class BracketsUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(BracketsUtils.class);

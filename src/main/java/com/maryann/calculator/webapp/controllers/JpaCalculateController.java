@@ -2,8 +2,6 @@ package com.maryann.calculator.webapp.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.maryann.calculator.db.jdbc.JdbcLog;
-import com.maryann.calculator.db.jdbc.JdbcLogsUtils;
 import com.maryann.calculator.db.jpa.JpaLog;
 import com.maryann.calculator.db.jpa.JpaLogUtils;
 import com.maryann.calculator.services.ExpressionTransformer;
@@ -21,7 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.List;
+
+/**
+ * Rest controller with Jpa usage
+ * @author Maria Gridneva
+ * @version 1.0
+ * @since 1.0
+ */
 
 @RestController
 @RequestMapping("/jpa/calculate")

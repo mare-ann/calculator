@@ -6,6 +6,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
+/**
+ * This class to present one row from logs table for Jpa uses
+ * @author Maria Gridneva
+ * @version 1.0
+ * @since 1.0
+ */
 @Entity
 @Table(name = "logs")
 public class JpaLog {

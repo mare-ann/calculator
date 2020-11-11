@@ -7,6 +7,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Main Web-Application
+ * @author Maria Gridneva
+ * @version 1.0
+ * @since 1.0
+ */
+
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan({"com.maryann.calculator.webapp", "com.maryann.calculator.db", "com.maryann.calculator.services"})
