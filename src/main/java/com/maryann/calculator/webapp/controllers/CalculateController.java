@@ -1,6 +1,9 @@
 package com.maryann.calculator.webapp.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maryann.calculator.db.jdbc.DBLogsUtils;
+import com.maryann.calculator.db.jdbc.Log;
 import com.maryann.calculator.services.ExpressionTransformer;
 import org.checkerframework.checker.units.qual.Acceleration;
 import org.slf4j.Logger;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.List;
 
 @RestController
 @RequestMapping("/calculate")
@@ -48,5 +52,14 @@ public class CalculateController {
                 dbLogsUtils.saveExpression(q, prityResult, (timeEnd - timeStart));
             }
         }
+    }
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public String getAll () throws JsonProcessingException {
+        List<Log> returned = dbLogsUtils.getAll();
+        ObjectMapper ob = new ObjectMapper();
+        String asString = ob.writeValueAsString(returned);
+        System.out.println(asString);
+        return asString;
     }
 }
