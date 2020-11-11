@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class DBLogsUtils {
-    private static final Logger log = LoggerFactory.getLogger(DBLogsUtils.class);
+public class JdbcLogsUtils {
+    private static final Logger log = LoggerFactory.getLogger(JdbcLogsUtils.class);
 
     @Value("${spring.datasource.url}")
     private String url;
@@ -48,9 +48,9 @@ public class DBLogsUtils {
         }
     }
 
-    public List<Log> getAll() {
+    public List<JdbcLog> getAll() {
         String query = "Select * from `calculator`.`logs`;";
-        List<Log> logTable = new ArrayList<>();
+        List<JdbcLog> logTable = new ArrayList<>();
         Connection con = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -67,7 +67,7 @@ public class DBLogsUtils {
             while (rs.next()) {
 //                System.out.println(rs.getInt("id") + "|" + rs.getString("expression")
 //                + "|" + rs.getString("result"));
-                Log log = new Log();
+                JdbcLog log = new JdbcLog();
                 log.setId(rs.getInt("id"));
                 log.setExpression(rs.getString("expression"));
                 log.setResult(rs.getString("result"));

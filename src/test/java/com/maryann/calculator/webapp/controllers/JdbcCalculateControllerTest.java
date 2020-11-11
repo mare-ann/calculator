@@ -1,14 +1,21 @@
 package com.maryann.calculator.webapp.controllers;
 
-import com.maryann.calculator.db.jdbc.DBLogsUtils;
+import com.maryann.calculator.WebCalculator;
+import com.maryann.calculator.db.jdbc.JdbcLogsUtils;
+import com.maryann.calculator.db.jpa.JpaLogUtils;
 import com.maryann.calculator.services.ExpressionTransformer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -18,16 +25,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = CalculateController.class)
-public class CalculateControllerTest {
+@ContextConfiguration(classes = {JdbcCalculateController.class})
+@WebMvcTest(controllers = JdbcCalculateController.class)
+public class JdbcCalculateControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private ExpressionTransformer trans;
+
     @MockBean
-    private DBLogsUtils dbLogsUtils;
+    private JdbcLogsUtils dbLogsUtils;
 
     @Test
     public void controllerTest() throws Exception {
@@ -35,7 +44,7 @@ public class CalculateControllerTest {
         Mockito.when(trans.transformIntoNumber(input)).thenReturn(3.0);
         Mockito.doNothing().when(dbLogsUtils).saveExpression(eq(input), eq("3"), anyLong());
 
-        MockHttpServletResponse responce = mockMvc.perform(get("/calculate")
+        MockHttpServletResponse responce = mockMvc.perform(get("/jdbc/calculate")
                 .param("q", input))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
@@ -46,8 +55,9 @@ public class CalculateControllerTest {
     public void controllerToException() throws Exception {
         String exception = "tan90";
         Mockito.when(trans.transformIntoNumber(exception)).thenThrow(new RuntimeException());
+        Mockito.doNothing().when(dbLogsUtils).saveExpression(eq(exception), eq("Error in expression"), anyLong());
 
-        MockHttpServletResponse responce = mockMvc.perform(get("/calculate")
+        MockHttpServletResponse responce = mockMvc.perform(get("/jdbc/calculate")
                 .param("q", exception))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
