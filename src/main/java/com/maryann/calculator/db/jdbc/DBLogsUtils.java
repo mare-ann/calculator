@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class DBLogsUtils {
@@ -46,9 +48,9 @@ public class DBLogsUtils {
         }
     }
 
-    public void getLogs() {
+    public List<Log> getAll() {
         String query = "Select * from `calculator`.`logs`;";
-
+        List<Log> logTable = new ArrayList<>();
         Connection con = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -63,17 +65,23 @@ public class DBLogsUtils {
             rs = stmt.executeQuery(query);
 
             while (rs.next()) {
-                int count = rs.getInt(1);
-                System.out.println("Total number of books in the table : " + count);
+//                System.out.println(rs.getInt("id") + "|" + rs.getString("expression")
+//                + "|" + rs.getString("result"));
+                Log log = new Log();
+                log.setId(rs.getInt("id"));
+                log.setExpression(rs.getString("expression"));
+                log.setResult(rs.getString("result"));
+                log.setCalculationTime(rs.getInt("calculation_time"));
+                logTable.add(log);
             }
-
         } catch (SQLException sqlEx) {
             sqlEx.printStackTrace();
         } finally {
-            //close connection ,stmt and resultset here
+            //close connection ,stmt and result set here
             try { con.close(); } catch(Exception se) { /*can't do anything */ }
             try { stmt.close(); } catch(Exception se) { /*can't do anything */ }
             try { rs.close(); } catch(Exception se) { /*can't do anything */ }
         }
+        return logTable;
     }
 }
