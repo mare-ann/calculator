@@ -3,6 +3,13 @@ package com.maryann.calculator.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class calculates trigonometric functions
+ * and return double number
+ * @author Maria Gridneva
+ * @version 1.0
+ * @since 1.0
+ */
 
 public class TrigonometricFunctions {
 

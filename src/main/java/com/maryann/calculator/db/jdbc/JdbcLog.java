@@ -2,6 +2,13 @@ package com.maryann.calculator.db.jdbc;
 
 import java.util.Date;
 //class to present one row from logs table
+
+/**
+ * This class to present one row from logs table for Jdbc uses
+ * @author Maria Gridneva
+ * @version 1.0
+ * @since 1.0
+ */
 public class JdbcLog {
     private Integer id ;
     private String expression;

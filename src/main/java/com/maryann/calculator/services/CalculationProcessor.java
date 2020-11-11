@@ -7,15 +7,27 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class can calculate expressions without brackets
+ * @author Maria Gridneva
+ * @version 1.0
+ * @since 1.0
+ */
+
 public class CalculationProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(CalculationProcessor.class);
 
+    /**
+     * Function take expression and calculate it, and returns the result as a number type double
+     * @param expression  - string representation of an expression, for example: "5+1*10"
+     * @return double number, result of expression
+     */
     public static double calculate (String expression) {
         logger.trace("Start function CalculationProcessor.calculate()");
         logger.debug("Calculating expression: " + expression);
         String res2;
-        if (expression.matches("-?\\d+(\\.\\d+)?")) {
+        if (expression.matches("-?\\d+(\\.\\d+)?")) {//check if expression is just a number
             logger.debug("Operation not found only number {}", expression);
             return Double.parseDouble(expression);
         } else if (expression.contains("sin") || expression.contains("cos") || expression.contains("tan") || expression.contains("cot")){
@@ -28,19 +40,29 @@ public class CalculationProcessor {
             res2 = calculateExpressionWithoutBrackets(expression, "+", "-");
         } else {
             double res = Double.parseDouble(expression);
+            //if expression don't have any operation , return result
             return res;
         }
+        //recursive call if expression contains some operations
         return calculate(res2);
     }
 
+    /**
+     * If expression have trigonometric operation, calculate it,
+     * and replace by result
+     * @param expression - string representation of an expression, for example: "sin45+1*cos10"
+     * @return expression without trigonometric operation
+     */
     public static String replaceTrigonometricFunction(String expression) {
         logger.trace("Start function CalculationProcessor.replaceTrigonometricFunction()");
+        //create regex
         Pattern p = Pattern.compile("(sin|cos|tan|cot)(-?\\d+(\\.\\d+)?)");
-        Matcher m = p.matcher(expression);
+        Matcher m = p.matcher(expression);//find all matches in expression
         while (m.find()){
-            String exp = m.group(0);
-            String operation = m.group(1);
-            String value = m.group(2);
+            //find for groups
+            String exp = m.group(0);//find operation; 1+sin45 -> sin45
+            String operation = m.group(1);//find name of trigonometric operation; sin45 -> sin
+            String value = m.group(2);// its a number; sin45 -> 45
             double res =0;
             double number = Double.parseDouble(value);
             logger.debug("Found function {}", exp);
@@ -58,6 +80,7 @@ public class CalculationProcessor {
                     res = TrigonometricFunctions.cottangentFunction(number);
                     break;
             }
+            //replace our expression in string
             expression = expression.replace(exp, String.valueOf(res));
         }
         logger.trace("End function CalculationProcessor.replaceTrigonometricFunction()");
@@ -66,42 +89,51 @@ public class CalculationProcessor {
 
     private static String calculateExpressionWithoutBrackets(String expression, String operation1, String operation2) {
         logger.trace("Start function CalculationProcessor.calculateExpressionWithoutBrackets()");
+        //in expression replace two minus on plus
         expression = expression.replace("--", "+");
-        int contMult = expression.indexOf(operation1, 1);
-        int contDiv = expression.indexOf(operation2, 1);
+        //return get location first operation, after first character
+        int indexOfOper1 = expression.indexOf(operation1, 1);
+        //return get location second operation, after first character
+        int indexOfOper2 = expression.indexOf(operation2, 1);
 
-        int firstIndMulOrDiv;
-        if(contMult == -1) { // немає +
-            firstIndMulOrDiv = contDiv;
-        } else if (contDiv == -1) { //немає -
-            firstIndMulOrDiv = contMult;
-        } else { // є і "+" і "-"
-            firstIndMulOrDiv = Math.min(contDiv, contMult);
+        int indexOfCurrentOperation;
+        if(indexOfOper1 == -1) { // dont have +
+            indexOfCurrentOperation = indexOfOper2;
+        } else if (indexOfOper2 == -1) { //dont have -
+            indexOfCurrentOperation = indexOfOper1;
+        } else { //have "+" and "-", method min give smaller result
+            indexOfCurrentOperation = Math.min(indexOfOper2, indexOfOper1);
         }
         int indA, indB;
-        indA = getStartOfA(expression, firstIndMulOrDiv);
-        indB = getEndOfB(expression, firstIndMulOrDiv);
-
+        //return, start index of small expression
+        indA = getStartOfA(expression, indexOfCurrentOperation);
+        //return, end index of small expression
+        indB = getEndOfB(expression, indexOfCurrentOperation);
+        //cut small expression from input string
         String smallExp = expression.substring(indA, indB + 1);
         double res = calculateSingleOperation(smallExp);
         logger.debug("Calculated small expression {} result {} ", smallExp, res);
         String expCutStart = "";
         String expCutEnd = "";
         if (indA != 0 ) {
+            //take all before small expression
             expCutStart = expression.substring(0, indA);
         }
         if (indB != expression.length() - 1) {
+            //take all after small expression
             expCutEnd = expression.substring(indB + 1);
         }
         logger.trace("End function CalculationProcessor.calculateExpressionWithoutBrackets()");
+        //connect all three expression
         return expCutStart + res + expCutEnd;
     }
 
 
-    private static int getStartOfA(String expression, int firstIndMulOrDiv) {
+    private static int getStartOfA(String expression, int indexOfCurrentOperation) {
         logger.trace("Start function CalculationProcessor.getStartOfA()");
+        //create new obj
         StringBuilder a = new StringBuilder();
-        for (int i = firstIndMulOrDiv - 1; i >= 0 ; i--) {
+        for (int i = indexOfCurrentOperation - 1; i >= 0 ; i--) {
             char c = expression.charAt(i);
             if ((c >= '0' && c <= '9') || c == '.') {
                 a.insert(0, c);
@@ -118,12 +150,12 @@ public class CalculationProcessor {
             }
         }
         logger.trace("End function CalculationProcessor.getStartOfA()");
-        return firstIndMulOrDiv - a.length();
+        return indexOfCurrentOperation - a.length();
     }
 
-    private static int getEndOfB(String expression, int firstIndMulOrDiv) {
+    private static int getEndOfB(String expression, int indexOfCurrentOperation) {
         logger.trace("Start function CalculationProcessor.getEndOfB()");
-        int operationIndex = firstIndMulOrDiv;
+        int operationIndex = indexOfCurrentOperation;
         String b = "";
         if (expression.charAt(operationIndex + 1) == '-') {
             b = "-";

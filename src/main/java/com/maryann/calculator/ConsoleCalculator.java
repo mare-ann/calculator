@@ -8,6 +8,14 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Scanner;
 
+
+/**
+ * Main Console Application
+ * @author Maria Gridneva
+ * @version 1.0
+ * @since 1.0
+ */
+
 public class ConsoleCalculator {
 
     private static final Logger logger = LoggerFactory.getLogger(ConsoleCalculator.class);

@@ -6,11 +6,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+/**
+ * This class can calculate expressions with brackets,
+ * gets expression from brackets and using {@link CalculationProcessor} to get the result
+ * @author Maria Gridneva
+ * @version 1.0
+ * @since 1.0
+ */
+
 @Service
 public class ExpressionTransformer {
 
     private static final Logger logger = LoggerFactory.getLogger(ExpressionTransformer.class);
 
+    /**
+     * Function take expression , delete all spaces, check balance brackets
+     * and with to use class {@link CalculationProcessor} return result
+     * @param expression - string expression
+     * @return double number
+     */
     public double transformIntoNumber(String expression) {
         logger.trace("Start function ExpressionTransformer.transformIntoNumber()");
         expression = DeleteOfExtraCharacters.cleanSpaces(expression);
